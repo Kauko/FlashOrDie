@@ -1,5 +1,5 @@
 
-Crafty.c("PlayerControls", {
+Crafty.c("Player", {
     _keys: { 
     UP_ARROW: [0,-1],
     }, 
@@ -16,7 +16,8 @@ Crafty.c("PlayerControls", {
 
         angle = Math.atan2(this.dire.x, this.dire.y) * 180/3.141;
 
-        this.rotation =  -angle;
+        this.rotation = -angle;
+        console.log(angle);
     },
 
     init: function() {

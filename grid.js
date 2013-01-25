@@ -82,7 +82,7 @@ Crafty.c("Grid", {
     	for(var y = 0; y < this._mapData.length; y++){	
     		for(var x = 0; x < this._mapData[y].length; x++){
        			if(this._mapData[y][x] === '1'){
-    				Crafty.e("2D, Canvas, wall").attr({x: x * this._nodeSize, y: y * this._nodeSize, z: 10});
+    				Crafty.e("2D, Canvas, wall, Collision").attr({x: x * this._nodeSize, y: y * this._nodeSize, z: 10});
     			}
     		}
     	}
