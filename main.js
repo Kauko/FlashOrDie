@@ -5,6 +5,7 @@ var CANVAS_WIDTH = 1200;
 var CANVAS_HEIGHT = 624;
 
 var GRID = null;
+var PLAYER = null;
 
 
 
@@ -18,8 +19,7 @@ window.onload = (function () {
     
     //TODO compose spritesheets when ready
     Crafty.scene("loading", function(){
-        Crafty.load(["sprites.png"], function() {
-        	
+        Crafty.load(["sprites.png", "gfx/dick.png"], function() {
             loadSprites();
             Crafty.scene("main");
 
@@ -28,7 +28,6 @@ window.onload = (function () {
         Crafty.background("#AAF");
         Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
                 .text("Loading..");
-
 
     });
 
@@ -42,9 +41,13 @@ window.onload = (function () {
 		//gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
 		//ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
         this.bind("MapReady", function(){
+        	PLAYER = Crafty.e("2D, Canvas, PlayerControls, hero").attr({x:10, y:10, z:10});
+       		PLAYER.addComponent("Multiway").multiway(3, { W: -90, S: 90, D: 0, A: 180});
         	var enemy = Crafty.e("Enemy");
 
         });
+
+
 
     });
    
@@ -53,7 +56,13 @@ window.onload = (function () {
 		Crafty.sprite(16, "sprites.png", {
         	wall: [1,0],
         	enemy: [0,1]
+
         });
+
+        Crafty.sprite(32, "gfx/player.png", {
+            hero: [0,0]
+        });
+
     }
 
     //starting point
