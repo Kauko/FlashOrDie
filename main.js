@@ -5,6 +5,7 @@ var CANVAS_WIDTH = 1200;
 var CANVAS_HEIGHT = 624;
 
 var GRID = null;
+var PLAYER = null;
 
 
 
@@ -33,7 +34,9 @@ window.onload = (function () {
     Crafty.scene("main", function(){
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
 		GRID = Crafty.e("Grid");
-        var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero").attr({x:10, y:10, z:10});
+        
+        PLAYER = Crafty.e("2D, Canvas, PlayerControls, hero").attr({x:10, y:10, z:10});
+        PLAYER.addComponent("Multiway").multiway(3, { W: -90, S: 90, D: 0, A: 180});
     });
    
 
@@ -42,7 +45,7 @@ window.onload = (function () {
         	wall: [2,0]
         });
 
-        Crafty.sprite(128, "gfx/dick.png", {
+        Crafty.sprite(32, "gfx/player.png", {
             hero: [0,0]
         });
 
