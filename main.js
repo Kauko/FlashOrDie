@@ -18,7 +18,7 @@ window.onload = (function () {
     
     //TODO compose spritesheets when ready
     Crafty.scene("loading", function(){
-        Crafty.load(["sprites.png"], function() {
+        Crafty.load(["sprites.png", "gfx/dick.png"], function() {
             loadSprites();
             Crafty.scene("main");
         });
@@ -27,21 +27,25 @@ window.onload = (function () {
         Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
                 .text("Loading..");
 
-
     });
 
 
     Crafty.scene("main", function(){
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
 		GRID = Crafty.e("Grid");
-			
+        var player = Crafty.e("2D, Canvas, PlayerControls, Slide, hero").attr({x:10, y:10, z:10});
     });
    
 
     function loadSprites(){
 		Crafty.sprite(32, "sprites.png", {
-        	wall:[2,0]
+        	wall: [2,0]
         });
+
+        Crafty.sprite(128, "gfx/dick.png", {
+            hero: [0,0]
+        });
+
     }
 
     //starting point
