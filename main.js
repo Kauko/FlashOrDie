@@ -19,8 +19,10 @@ window.onload = (function () {
     //TODO compose spritesheets when ready
     Crafty.scene("loading", function(){
         Crafty.load(["sprites.png"], function() {
+        	
             loadSprites();
             Crafty.scene("main");
+
         });
 
         Crafty.background("#AAF");
@@ -32,15 +34,25 @@ window.onload = (function () {
 
 
     Crafty.scene("main", function(){
+       //lataa täällä että map ladattu kun mainissa
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
-		GRID = Crafty.e("Grid");
-			
+        GRID = Crafty.e("Grid");
+		
+		    
+		//gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
+		//ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
+        this.bind("MapReady", function(){
+        	var enemy = Crafty.e("Enemy");
+
+        });
+
     });
    
 
     function loadSprites(){
-		Crafty.sprite(32, "sprites.png", {
-        	wall:[2,0]
+		Crafty.sprite(16, "sprites.png", {
+        	wall: [1,0],
+        	enemy: [0,1]
         });
     }
 
