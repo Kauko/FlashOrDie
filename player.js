@@ -55,12 +55,13 @@ Crafty.c("Player", {
 		this.frameCounter++;
 		
       	if(this.hit("enemy")) {
-          	Crafty.trigger("GameOver", 0);
+
+           Crafty.trigger("Monster_GameOver");
+        }else if(this.hit("goal")){
+          Crafty.trigger("Victory");
         }
         else if(this.hit("hole")){
-        	Crafty.trigger("GameOver", 1);
-		}else if(this.hit("goal")){
-          Crafty.trigger("Victory");
+          Crafty.trigger("Hole_GameOver");
         }
       	
 		var gridPos = GRID.convertToGridCoords(this.x, this.y);
