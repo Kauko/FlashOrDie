@@ -141,7 +141,9 @@ window.onload = (function () {
     function loadSprites(){
         Crafty.sprite(16, "sprites.png", {
             wall: [1,0],
-            enemy: [0,1]
+            enemy: [0,1],
+            hole: [1,1],
+            goal: [2,0]
 
         });
 
