@@ -48,7 +48,7 @@ Crafty.c("Grid", {
 		 	}
 		 };
 
-		request.open("GET", "map", true);
+		request.open("GET", "maps/map2", true);
 		request.send();    
 	},
 
