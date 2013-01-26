@@ -1,13 +1,15 @@
 
 Crafty.c("Flashlight", {
 
+	ready: true,
+
     init: function(){
         this.requires("2D, Canvas, Mouse");
         this.z = 101;
 		this.maskCanvas = document.createElement('canvas');
 
     	this.bind("EnterFrame", function(obj){
-          	//this.drawBlack();
+          	this.drawBlack();
     	});
 
     	/*this.bind("Draw", function(obj){
@@ -26,7 +28,7 @@ Crafty.c("Flashlight", {
 		HEIGHT = 624;
 
 		ctx = Crafty.canvas.context;
-		ctx.clearRect(0,0, WIDTH, HEIGHT);
+		//ctx.clearRect(0,0, WIDTH, HEIGHT);
 		
 		ctx.fillStyle = "rgba(255, 255, 255, 0)";
 		ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -37,7 +39,7 @@ Crafty.c("Flashlight", {
 		this.maskCanvas.height = HEIGHT;
 
 		var maskCtx = this.maskCanvas.getContext('2d');
-		//maskCtx.clearRect(0,0, WIDTH, HEIGHT);
+		maskCtx.clearRect(0,0, WIDTH, HEIGHT);
 		// This color is the one of the filled shape
 		maskCtx.fillStyle = "black";
 		// Fill the mask
@@ -71,6 +73,8 @@ Crafty.c("Flashlight", {
 		maskCtx.fill();
 
 		ctx.drawImage(this.maskCanvas, 0, 0);
+
+		this._changed = true;
 		// Draw mask on the image, and done !
 
 	},

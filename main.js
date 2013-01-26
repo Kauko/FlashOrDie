@@ -14,6 +14,8 @@ var MENU_BG = null;
 
 var SOUNDS_INITIALIZED = false;
 
+var FLASH = null;
+
 window.onload = (function () {
 
     
@@ -88,9 +90,8 @@ window.onload = (function () {
         TUTORIAL_TEXT4.destroy();
 
         if(Crafty.asset("sprites.png") === undefined){
-            Crafty.load(["sprites.png", "gfx/player.png"], function() {
+            Crafty.load(["sprites.png", "gfx/player.png", "gfx/lightmask.png"], function() {
                 loadSprites();
-                loadSounds();
                 loading_text.destroy();
                 Crafty.scene("main");
             });
@@ -123,11 +124,15 @@ window.onload = (function () {
         this.bind("MapReady", function(){
             PLAYER = Crafty.e("2D, Canvas, Player, hero").attr({x: 30 * 16, y:6 * 16, z:10});
 
+            FLASH = Crafty.e("2D, Canvas, flash").attr({z:200});
+
             PLAYER.addComponent("Multiway").multiway(2, { W: -90, S: 90, D: 0, A: 180});
             PLAYER.addComponent("Collision").bind('Moved', function(from){
                 if(this.hit("wall")) {
                    this.attr({x: from.x, y:from.y});
                 }
+                FLASH.origin("center");
+                FLASH.attr({x: PLAYER.x - FLASH.w / 2, y: PLAYER.y - FLASH.h / 2});
             });
 
             ENEMY = Crafty.e("Enemy");
@@ -199,6 +204,10 @@ window.onload = (function () {
 
         Crafty.sprite(10, "gfx/player2.png", {
             hero: [0,0]
+        });
+
+        Crafty.sprite(1200, "gfx/lightmask.png", {
+            flash: [0,0]
         });
 
     }
