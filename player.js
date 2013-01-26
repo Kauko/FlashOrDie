@@ -30,10 +30,13 @@ Crafty.c("Player", {
       
       this.bind("EnterFrame", function(){
       	
-      	if(this.hit("enemy") || this.hit("hole")) {
-           		Crafty.trigger("GameOver");
+      	if(this.hit("enemy")) {
+           		Crafty.trigger("Monster_GameOver");
         }else if(this.hit("goal")){
           Crafty.trigger("Victory");
+        }
+        else if(this.hit("hole")){
+          Crafty.trigger("Hole_GameOver");
         }
       	
 		var gridPos = GRID.convertToGridCoords(this.x, this.y);

@@ -70,10 +70,6 @@ window.onload = (function () {
     });
 
     Crafty.scene("loading_game", function(){
-        Crafty.load(["sprites.png", "gfx/player.png"], function() {
-            loadSprites();
-            Crafty.scene("main");
-        });
 
         Crafty.background("#AAF");
         Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
@@ -85,6 +81,15 @@ window.onload = (function () {
         TUTORIAL_TEXT2.destroy();
         TUTORIAL_TEXT3.destroy();
         TUTORIAL_TEXT4.destroy();
+
+        if(Crafty.asset("sprites.png") === undefined){
+            Crafty.load(["sprites.png", "gfx/player.png"], function() {
+                loadSprites();
+                Crafty.scene("main");
+            });
+        }else{
+            Crafty.scene("main");
+        }
     });
 
 
@@ -109,9 +114,13 @@ window.onload = (function () {
 
             ENEMY = Crafty.e("Enemy");
 
-	        this.bind("GameOver", function(){
-	        	Crafty.scene("bad_end");
+	        this.bind("Monster_GameOver", function(){
+	        	Crafty.scene("monster_end");
 			});
+
+            this.bind("Hole_GameOver", function(){
+                Crafty.scene("hole2_end");
+            });
 
             this.bind("Victory", function(){
                 Crafty.scene("good_end");
@@ -121,17 +130,28 @@ window.onload = (function () {
 		
 	});
 	//todo retrynappi ja reposition paskat uusiksi
-    Crafty.scene("bad_end", function(){
+    Crafty.scene("monster_end", function(){
     	console.log("BAD END");
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
-    	ENEMY.destroy();
+    	setTimeout("Crafty.scene(\"Main_menu\")", 3000);
+        ENEMY.destroy();
     	PLAYER.destroy();
     	GRID.destroy();
+    });
+
+    Crafty.scene("hole_end", function(){
+        console.log("BAD END");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+        setTimeout("Crafty.scene(\"Main_menu\")", 3000);
+        ENEMY.destroy();
+        PLAYER.destroy();
+        GRID.destroy();
     });
 
     Crafty.scene("good_end", function(){
         console.log("GOOD END");
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+        setTimeout("Crafty.scene(\"Main_menu\")", 3000);
         ENEMY.destroy();
         PLAYER.destroy();
         GRID.destroy();
