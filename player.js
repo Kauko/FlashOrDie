@@ -64,7 +64,6 @@ Crafty.c("Player", {
 		if(gridPos.x > this.lastGridPos.x || gridPos.x < this.lastGridPos.x ||
 		   gridPos.y > this.lastGridPos.y || gridPos.y < this.lastGridPos.y){
 			
-			Crafty.trigger("peenis");
 			this.lastGridPos = gridPos;
 			ENEMY.getNewPath(gridPos);
 			

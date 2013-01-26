@@ -13,6 +13,7 @@ var BG_IMAGE = null;
 var MENU_BG = null;
 
 var SOUNDS_INITIALIZED = false;
+var GRID_INITIALIZED = false;
 
 var FLASH = null;
 
@@ -108,11 +109,12 @@ window.onload = (function () {
         console.log("Playing");
        //lataa täällä että map ladattu kun mainissa
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
-        
+        console.log("sounds init: " + SOUNDS_INITIALIZED + " grid; " + GRID);
         this.loader = Crafty.e();
         this.loader.bind("EnterFrame", function(){
-			if(SOUNDS_INITIALIZED && GRID == null){
+			if(SOUNDS_INITIALIZED && GRID_INITIALIZED == false){
 		       GRID = Crafty.e("Grid");
+		       GRID_INITIALIZED = true;
 		       console.log("GRID LOADEEED");
 			}
 		});
@@ -156,9 +158,7 @@ window.onload = (function () {
                 Crafty.scene("good_end");
             });
             
-            this.bind("peenis", function(){
-            	loopMusic();
-           	});
+            loopMusic();
             
         	this.loader.destroy();
             
@@ -168,7 +168,7 @@ window.onload = (function () {
 	//todo retrynappi ja reposition paskat uusiksi
     Crafty.scene("monster_end", function(){
     	console.log("BAD END");
-        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_trap.png");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_monster.png");
     	setTimeout("Crafty.scene(\"Main_menu\")", 3000);
         ENEMY.destroy();
     	PLAYER.destroy();
@@ -177,7 +177,7 @@ window.onload = (function () {
 
     Crafty.scene("hole_end", function(){
         console.log("BAD END");
-        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_trap.png");
         setTimeout("Crafty.scene(\"Main_menu\")", 3000);
         ENEMY.destroy();
         PLAYER.destroy();
