@@ -9,7 +9,6 @@ var PLAYER = null;
 var ENEMY = null;
 
 
-
 window.onload = (function () {
 
     
@@ -36,13 +35,14 @@ window.onload = (function () {
     Crafty.scene("main", function(){
        //lataa täällä että map ladattu kun mainissa
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
+
         GRID = Crafty.e("Grid");
         
             
         //gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
         //ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
         this.bind("MapReady", function(){
-            PLAYER = Crafty.e("2D, Canvas, Player, hero").attr({x: 30 * 16, y:6 * 16, z:10});
+            PLAYER = Crafty.e("2D, Canvas, Player, Flashlight, hero").attr({x: 30 * 16, y:6 * 16, z:10});
             PLAYER.addComponent("Multiway").multiway(2, { W: -90, S: 90, D: 0, A: 180});
             PLAYER.addComponent("Collision").bind('Moved', function(from) {
                 if(this.hit("wall")) {
@@ -53,6 +53,8 @@ window.onload = (function () {
             ENEMY = Crafty.e("Enemy");
 
         });
+
+        //var flash = Crafty.e("2D, Canvas, Flashlight").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 102});
 
 
 

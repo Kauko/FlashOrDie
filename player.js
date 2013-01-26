@@ -30,13 +30,13 @@ Crafty.c("Player", {
       }
       
       this.bind("EnterFrame", function(){
-		var gridPos = GRID.convertToGridCoords(this.x, this.y);
-		
-		if(gridPos.x > this.lastGridPos.x || gridPos.x < this.lastGridPos.x ||
-		   gridPos.y > this.lastGridPos.y || gridPos.y < this.lastGridPos.y){
-			
-			this.lastGridPos = gridPos;
-			ENEMY.getNewPath(gridPos);
+  		var gridPos = GRID.convertToGridCoords(this.x, this.y);
+  		
+  		if(gridPos.x > this.lastGridPos.x || gridPos.x < this.lastGridPos.x ||
+  		   gridPos.y > this.lastGridPos.y || gridPos.y < this.lastGridPos.y){
+  			
+  			this.lastGridPos = gridPos;
+  			ENEMY.getNewPath(gridPos);
 			
 			
 		}
