@@ -31,7 +31,7 @@ Crafty.c("Player", {
       this.bind("EnterFrame", function(){
       	
       	if(this.hit("enemy")) {
-           		Crafty.trigger("Monster_GameOver");
+           Crafty.trigger("Monster_GameOver");
         }else if(this.hit("goal")){
           Crafty.trigger("Victory");
         }
