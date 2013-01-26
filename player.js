@@ -1,3 +1,4 @@
+SOUND = null;
 
 Crafty.c("Player", {
     _keys: { 
@@ -23,6 +24,14 @@ Crafty.c("Player", {
     init: function() {
    	  this.attr({x: 4 * 16, y: 4 * 16, z:10, w:10, h:10}); 
   	  this.lastGridPos = {x: 4, y: 4};
+  	  this.beatRate = 100;
+  	  this.heartBeats = [];
+  	  this.heartBeats[0] = BEAT1_SND;
+  	  this.heartBeats[1] = BEAT2_SND;
+  	  this.heartBeats[2] = BEAT3_SND;
+  	  this.heartBeats[3] = BEAT4_SND;
+  	  this.frameCounter = 0;
+  	  
       for(var k in this._keys) {
         var keyCode = Crafty.keys[k] || k;
         this._keys[keyCode] = this._keys[k];
@@ -30,8 +39,23 @@ Crafty.c("Player", {
       
       this.bind("EnterFrame", function(){
       	
+		if(this.frameCounter % this.beatRate === 0){
+		  this.playHeartBeat();
+		  this.beatRate = Math.floor(ENEMY.getDistance(this.x, this.y));
+	      if(this.beatRate > 100 )
+			this.beatRate = 100;
+		  if(this.beatRate < 40)
+		  	this.beatRate = 40;
+			
+		  this.frameCounter = 0;
+		  console.log("br = " + this.beatRate);
+
+		}
+		
+		this.frameCounter++;
+		
       	if(this.hit("enemy")) {
-           		Crafty.trigger("GameOver", 0);
+          	Crafty.trigger("GameOver", 0);
         }
         else if(this.hit("hole")){
         	Crafty.trigger("GameOver", 1);
@@ -44,6 +68,7 @@ Crafty.c("Player", {
 		if(gridPos.x > this.lastGridPos.x || gridPos.x < this.lastGridPos.x ||
 		   gridPos.y > this.lastGridPos.y || gridPos.y < this.lastGridPos.y){
 			
+			Crafty.trigger("peenis");
 			this.lastGridPos = gridPos;
 			ENEMY.getNewPath(gridPos);
 			
@@ -53,6 +78,13 @@ Crafty.c("Player", {
       });
 
       Crafty.addEvent(this, Crafty.canvas._canvas, "mousemove", this._onmousemove);
+    },
+    
+    playHeartBeat: function(){
+		
+		var r = Math.floor(Math.random() * 4); 
+		this.heartBeats[r].play();   	
+
     }
     
   });

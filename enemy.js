@@ -13,6 +13,7 @@ Crafty.c("Enemy", {
         this._gridPos = GRID.convertToGridCoords(this.x, this.y);
         this._tweening = false;
         
+        
 		this.bind("TweenEnd", function(){
 			this._tweening = false;
 			this._processMove();
