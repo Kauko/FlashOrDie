@@ -7,6 +7,7 @@ var CANVAS_HEIGHT = 624;
 var GRID = null;
 var PLAYER = null;
 var ENEMY = null;
+var BG_IMAGE = null;
 
 
 
@@ -42,23 +43,33 @@ window.onload = (function () {
         //gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
         //ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
         this.bind("MapReady", function(){
-            PLAYER = Crafty.e("2D, Canvas, Player, hero").attr({x: 30 * 16, y:6 * 16, z:10});
+            PLAYER = Crafty.e("2D, Canvas, Player, hero");
             PLAYER.addComponent("Multiway").multiway(2, { W: -90, S: 90, D: 0, A: 180});
-            PLAYER.addComponent("Collision").bind('Moved', function(from) {
+            PLAYER.addComponent("Collision").bind('Moved', function(from){
                 if(this.hit("wall")) {
                    this.attr({x: from.x, y:from.y});
                 }
             });
 
+
             ENEMY = Crafty.e("Enemy");
 
-        });
-
-
-
+	        this.bind("GameOver", function(){
+	        	Crafty.scene("end");
+			});    
+			
+		});    
+		
+	});
+	//todo retrynappi ja reposition paskat uusiksi
+    Crafty.scene("end", function(){
+    	console.log("END");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+    	ENEMY.destroy();
+    	PLAYER.destroy();
+    	GRID.destroy();
     });
-   
-
+    
     function loadSprites(){
         Crafty.sprite(16, "sprites.png", {
             wall: [1,0],
