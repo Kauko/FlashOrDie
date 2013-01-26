@@ -82,6 +82,10 @@ window.onload = (function () {
 
         MENU_BG.destroy();
         menu.destroy();
+        TUTORIAL_TEXT.destroy();
+        TUTORIAL_TEXT2.destroy();
+        TUTORIAL_TEXT3.destroy();
+        TUTORIAL_TEXT4.destroy();
     });
 
 
@@ -107,25 +111,39 @@ window.onload = (function () {
             ENEMY = Crafty.e("Enemy");
 
 	        this.bind("GameOver", function(){
-	        	Crafty.scene("end");
-			});    
+	        	Crafty.scene("bad_end");
+			});
+
+            this.bind("Victory", function(){
+                Crafty.scene("good_end");
+            }) 
 			
 		});    
 		
 	});
 	//todo retrynappi ja reposition paskat uusiksi
-    Crafty.scene("end", function(){
-    	console.log("END");
+    Crafty.scene("bad_end", function(){
+    	console.log("BAD END");
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
     	ENEMY.destroy();
     	PLAYER.destroy();
     	GRID.destroy();
     });
+
+    Crafty.scene("good_end", function(){
+        console.log("GOOD END");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+        ENEMY.destroy();
+        PLAYER.destroy();
+        GRID.destroy();
+    })
     
     function loadSprites(){
         Crafty.sprite(16, "sprites.png", {
             wall: [1,0],
-            enemy: [0,1]
+            enemy: [0,1],
+            hole: [0,1],
+            goal: [0,1]
 
         });
 
