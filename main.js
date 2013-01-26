@@ -12,10 +12,15 @@ var BG_IMAGE = null;
 var BG_IMAGE = null;
 var MENU_BG = null;
 
+var SOUNDS_INITIALIZED = false;
 
 window.onload = (function () {
 
     
+
+	soundManager.onready(function() {
+		SOUNDS_INITIALIZED = true;
+	});
 
     //start crafty
     Crafty.init(CANVAS_WIDTH, CANVAS_HEIGHT, 60);
@@ -71,8 +76,6 @@ window.onload = (function () {
 
     Crafty.scene("loading_game", function(){
 
-
-
         Crafty.background("#AAF");
         loading_text = Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
                 .text("Loading..");
@@ -104,14 +107,22 @@ window.onload = (function () {
         console.log("Playing");
        //lataa täällä että map ladattu kun mainissa
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
-
-        GRID = Crafty.e("Grid");
         
+        this.loader = Crafty.e();
+        this.loader.bind("EnterFrame", function(){
+			if(SOUNDS_INITIALIZED && GRID == null){
+		       GRID = Crafty.e("Grid");
+		       console.log("GRID LOADEEED");
+			}
+		});
+
+
             
         //gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
         //ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
         this.bind("MapReady", function(){
             PLAYER = Crafty.e("2D, Canvas, Player, hero").attr({x: 30 * 16, y:6 * 16, z:10});
+
             PLAYER.addComponent("Multiway").multiway(2, { W: -90, S: 90, D: 0, A: 180});
             PLAYER.addComponent("Collision").bind('Moved', function(from){
                 if(this.hit("wall")) {
@@ -121,22 +132,31 @@ window.onload = (function () {
 
             ENEMY = Crafty.e("Enemy");
 
+
 	        this.bind("Monster_GameOver", function(){
+	        	DEATH_SND.play();
 	        	Crafty.scene("monster_end");
                 Crafty.audio.play("death",1,0.5);
 			});
 
             this.bind("Hole_GameOver", function(){
+            	DEATH_SND.play();
                 Crafty.scene("hole_end");
                 Crafty.audio.play("death",1,0.5);
             });
 
-            this.bind("Victory", function(){
-                Crafty.scene("good_end");
-            }) 
-			
-			Crafty.audio.play("music", -1);
 
+            this.bind("Victory", function(){
+            	WIN_SND.play();
+                Crafty.scene("good_end");
+            });
+            
+            this.bind("peenis", function(){
+            	loopMusic();
+           	});
+            
+        	this.loader.destroy();
+            
 		});    
 		
 	});
@@ -166,7 +186,7 @@ window.onload = (function () {
         ENEMY.destroy();
         PLAYER.destroy();
         GRID.destroy();
-    })
+    });
     
     function loadSprites(){
         Crafty.sprite(16, "sprites.png", {
@@ -183,12 +203,15 @@ window.onload = (function () {
 
     }
     
-    function loadSounds(){
-    	Crafty.audio.add("death", "death.mp3");
-    	Crafty.audio.add("music", "musa.mp3");
-
-
+    function loopMusic(){
+    	MUSIC.play({
+    	
+	    	onfinish: function() {
+	   		   loopMusic();
+	   		}
+   		});
     }
+
 
     //starting point
     Crafty.scene("Main_menu");
