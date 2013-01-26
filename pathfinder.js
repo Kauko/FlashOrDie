@@ -14,30 +14,28 @@ Crafty.c("PathFinder", {
 	 * 
 	 */
     findPath: function(pos, target){
-		
-	   console.log("FINDPATH CALLED");
+
 
        if(pos.x === target.x && pos.y === target.y)
           return null;
-          
+		
 	   var nodeSize = GRID.nodeSize();
        var l_width = CANVAS_WIDTH / nodeSize;
        var l_height = CANVAS_HEIGHT / nodeSize;
-       
+
+
        var d = new Array(l_width);
        var p = new Array(l_width);
        var color = new Array(l_width);
-       
-       var WHITE = 0;
-       var GRAY = 1;
-       var BLACK = 2;
+
+
 
        for(var x = 0; x < l_width; x++){
           d[x] = new Array(l_height);
           p[x] = new Array(l_height);
           color[x] = new Array(l_height);           	  
           for(var y = 0; y < l_height; y++){
-             color[x][y] = WHITE;
+             color[x][y] = "WHITE";
              p[x][y] = null;
              d[x][y] = 99999;
 
@@ -46,7 +44,7 @@ Crafty.c("PathFinder", {
 
 
        d[pos.x][pos.y] = 0;
-       color[pos.x][pos.y] = GRAY;
+       color[pos.x][pos.y] = "GRAY";
 
        var queue = [];
 
@@ -70,19 +68,18 @@ Crafty.c("PathFinder", {
              adj.push({x: t.x, y: t.y -1});
 
 
-
           for(i = 0; i < adj.length; i++ ){
              var v = adj[i];
-						
-             if(color[v.x][v.y] == WHITE){
-                color[v.x][v.y] = GRAY;
+
+             if(color[v.x][v.y] == "WHITE"){
+                color[v.x][v.y] = "GRAY";
                 d[v.x][v.y] = d[t.x][t.y] + 1;
                 p[v.x][v.y] = t;
                 queue.push(v);
              }
           }
 
-          color[t.x][t.y] = BLACK;
+          color[t.x][t.y] = "BLACK";
 
        }
 
@@ -110,7 +107,7 @@ Crafty.c("PathFinder", {
                 
         }while(!(temp.x == pos.x && temp.y == pos.y));
  
- 	   console.log("FINDPATH finished");
+
        return path;
 
                   

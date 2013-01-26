@@ -6,13 +6,15 @@ Crafty.c("Enemy", {
 	    this.requires("2D, Canvas, Tween, PathFinder, enemy");
 	    this._nodeSize = GRID.nodeSize();
         this.attr({x: 1 * this._nodeSize, y: 0 * this._nodeSize, z:5});
+        this.origin("center");
+
         this._path = null;
-        this._target = {x: 70, y: 30};
         this._tweenTime = 10;
         this._gridPos = GRID.convertToGridCoords(this.x, this.y);
-        this._getNewPath();
+        this._tweening = false;
         
 		this.bind("TweenEnd", function(){
+			this._tweening = false;
 			this._processMove();
        });
 
@@ -23,13 +25,15 @@ Crafty.c("Enemy", {
 	    if(this._path === null )
      	   return;
 		if(this._nextPos != null){
-
-			this._rotateTowards(this._nextPos.point());
-			var target = this._nextPos.point();
-
-    		this.tween({x: target.x * this._nodeSize, y: target.y * this._nodeSize}, this._tweenTime);
-        	this._gridPos = this._nextPos.point();  	
-    		this._nextPos = this._nextPos.next();
+			//tuplatweeen esto
+			if(this._tweening === false){
+				this._rotateTowards(this._nextPos.point());
+				var target = this._nextPos.point();
+	    		this.tween({x: target.x * this._nodeSize, y: target.y * this._nodeSize}, this._tweenTime);
+	        	this._gridPos = this._nextPos.point();  	
+	    		this._nextPos = this._nextPos.next();
+	    		this._tweening = true;
+    		}
 	   	}
    },
    
@@ -46,13 +50,15 @@ Crafty.c("Enemy", {
 		
 	},
         
-	_getNewPath: function(trigger){
+	getNewPath: function(target){
     	
-		var newPath = this.findPath(this._gridPos, this._target);
+		var newPath = this.findPath(this._gridPos, target);
 							
 		this._path = newPath;
-		this._nextPos = this._path.tail();
-		this._processMove();
+		if(this._path != null){
+			this._nextPos = this._path.tail();
+			this._processMove();
+		}
 
 	}
     
