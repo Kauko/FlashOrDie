@@ -70,14 +70,11 @@ window.onload = (function () {
     });
 
     Crafty.scene("loading_game", function(){
-        Crafty.load(["sprites.png", "gfx/player.png"], function() {
-            loadSprites();
-            loadSounds();
-            Crafty.scene("main");
-        });
+
+
 
         Crafty.background("#AAF");
-        Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
+        loading_text = Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
                 .text("Loading..");
 
         MENU_BG.destroy();
@@ -90,11 +87,16 @@ window.onload = (function () {
         if(Crafty.asset("sprites.png") === undefined){
             Crafty.load(["sprites.png", "gfx/player.png"], function() {
                 loadSprites();
+                loadSounds();
+                loading_text.destroy();
                 Crafty.scene("main");
             });
         }else{
+            loading_text.destroy();
             Crafty.scene("main");
         }
+
+
     });
 
 
@@ -109,7 +111,7 @@ window.onload = (function () {
         //gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
         //ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
         this.bind("MapReady", function(){
-            PLAYER = Crafty.e("2D, Canvas, Player, Flashlight, hero").attr({x: 30 * 16, y:6 * 16, z:10});
+            PLAYER = Crafty.e("2D, Canvas, Player, hero").attr({x: 30 * 16, y:6 * 16, z:10});
             PLAYER.addComponent("Multiway").multiway(2, { W: -90, S: 90, D: 0, A: 180});
             PLAYER.addComponent("Collision").bind('Moved', function(from){
                 if(this.hit("wall")) {
@@ -125,7 +127,7 @@ window.onload = (function () {
 			});
 
             this.bind("Hole_GameOver", function(){
-                Crafty.scene("hole2_end");
+                Crafty.scene("hole_end");
                 Crafty.audio.play("death",1,0.5);
             });
 
@@ -144,14 +146,6 @@ window.onload = (function () {
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_trap.png");
     	setTimeout("Crafty.scene(\"Main_menu\")", 3000);
         ENEMY.destroy();
-    	PLAYER.destroy();
-    	GRID.destroy();
-    });
-    
-    Crafty.scene("trap_end", function(){
-    	console.log("BAD END 2");
-        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_monster.png");
-    	ENEMY.destroy();
     	PLAYER.destroy();
     	GRID.destroy();
     });
