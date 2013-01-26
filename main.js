@@ -8,6 +8,9 @@ var GRID = null;
 var PLAYER = null;
 var ENEMY = null;
 
+var BG_IMAGE = null;
+var MENU_BG = null;
+
 
 
 window.onload = (function () {
@@ -18,22 +21,71 @@ window.onload = (function () {
     Crafty.init(CANVAS_WIDTH, CANVAS_HEIGHT, 60);
     Crafty.canvas.init();
     
-    //TODO compose spritesheets when ready
-    Crafty.scene("loading", function(){
-        Crafty.load(["sprites.png", "gfx/player.png"], function() {
-            loadSprites();
-            Crafty.scene("main");
-
+    /*Crafty.scene("loading_menu", function(){
+        Crafty.load(["bg_menu.png"], function() {
+            Crafty.scene("Main_menu");
         });
 
         Crafty.background("#AAF");
         Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
                 .text("Loading..");
 
+    });*/
+
+    Crafty.scene("Main_menu", function(){
+        console.log("Main menu");
+        MENU_BG = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg_menu.png");
+        menu = Crafty.e("Selector, OptionList").OptionList().Selector()
+            .bind("SelectorMoved", function(e){
+                this.hilightOptionListItem(e.index);
+            })
+            .bind("OptionItemSelected", function(e){
+                selectedOption = this.getId(this.getSelectorIndex());
+                Crafty.scene("loading_game");
+            });
+
+        TUTORIAL_TEXT = Crafty.e("SpriteFontWriter").SpriteFontWriter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2+100);
+        TUTORIAL_TEXT2 = Crafty.e("SpriteFontWriter").SpriteFontWriter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2+150);
+        TUTORIAL_TEXT3 = Crafty.e("SpriteFontWriter").SpriteFontWriter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2+200);
+        TUTORIAL_TEXT4 = Crafty.e("SpriteFontWriter").SpriteFontWriter(CANVAS_WIDTH/2, CANVAS_HEIGHT/2+250);
+        TUTORIAL_TEXT.setContent("WASD to move");
+        TUTORIAL_TEXT2.setContent("Mouse to control flashlight");
+        TUTORIAL_TEXT3.setContent("Stay away from the thing that's chasing you");
+        TUTORIAL_TEXT4.setContent("Don't fall down a hole and try to find the goal");
+
+
+        TUTORIAL_TEXT.eraseText();
+        TUTORIAL_TEXT.writeText();
+        TUTORIAL_TEXT2.eraseText();
+        TUTORIAL_TEXT2.writeText();
+        TUTORIAL_TEXT3.eraseText();
+        TUTORIAL_TEXT3.writeText();
+        TUTORIAL_TEXT4.eraseText();
+        TUTORIAL_TEXT4.writeText();
+
+        TUTORIAL_TEXT.center();
+        TUTORIAL_TEXT2.center();
+        TUTORIAL_TEXT3.center();
+        TUTORIAL_TEXT4.center();
+    });
+
+    Crafty.scene("loading_game", function(){
+        Crafty.load(["sprites.png", "gfx/player.png"], function() {
+            loadSprites();
+            Crafty.scene("main");
+        });
+
+        Crafty.background("#AAF");
+        Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
+                .text("Loading..");
+
+        MENU_BG.destroy();
+        menu.destroy();
     });
 
 
     Crafty.scene("main", function(){
+        console.log("Playing");
        //lataa täällä että map ladattu kun mainissa
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
         GRID = Crafty.e("Grid");
@@ -73,6 +125,6 @@ window.onload = (function () {
     }
 
     //starting point
-    Crafty.scene("loading");
+    Crafty.scene("Main_menu");
 
 });
