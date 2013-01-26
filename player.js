@@ -30,9 +30,12 @@ Crafty.c("Player", {
       
       this.bind("EnterFrame", function(){
       	
-      	if(this.hit("enemy") || this.hit("hole")) {
-           		Crafty.trigger("GameOver");
-        }else if(this.hit("goal")){
+      	if(this.hit("enemy")) {
+           		Crafty.trigger("GameOver", 0);
+        }
+        else if(this.hit("hole")){
+        	Crafty.trigger("GameOver", 1);
+		}else if(this.hit("goal")){
           Crafty.trigger("Victory");
         }
       	

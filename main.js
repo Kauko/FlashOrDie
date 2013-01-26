@@ -72,6 +72,7 @@ window.onload = (function () {
     Crafty.scene("loading_game", function(){
         Crafty.load(["sprites.png", "gfx/player.png"], function() {
             loadSprites();
+            loadSounds();
             Crafty.scene("main");
         });
 
@@ -109,29 +110,44 @@ window.onload = (function () {
 
             ENEMY = Crafty.e("Enemy");
 
-	        this.bind("GameOver", function(){
-	        	Crafty.scene("bad_end");
+	        this.bind("GameOver", function(type){
+	        	Crafty.audio.play("death",1,0.5);
+	        	if(type == 0)
+	        		Crafty.scene("monster_end");
+	        	else
+	        		Crafty.scene("trap_end");
 			});
 
             this.bind("Victory", function(){
                 Crafty.scene("good_end");
             }) 
 			
+			Crafty.audio.play("music", -1);
+
 		});    
 		
 	});
 	//todo retrynappi ja reposition paskat uusiksi
-    Crafty.scene("bad_end", function(){
+    Crafty.scene("monster_end", function(){
     	console.log("BAD END");
-        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_trap.png");
+    	ENEMY.destroy();
+    	PLAYER.destroy();
+    	GRID.destroy();
+    });
+    
+    Crafty.scene("trap_end", function(){
+    	console.log("BAD END 2");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_monster.png");
     	ENEMY.destroy();
     	PLAYER.destroy();
     	GRID.destroy();
     });
 
+
     Crafty.scene("good_end", function(){
         console.log("GOOD END");
-        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg.png");
+        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("winbg.png");
         ENEMY.destroy();
         PLAYER.destroy();
         GRID.destroy();
@@ -149,6 +165,13 @@ window.onload = (function () {
         Crafty.sprite(10, "gfx/player2.png", {
             hero: [0,0]
         });
+
+    }
+    
+    function loadSounds(){
+    	Crafty.audio.add("death", "death.mp3");
+    	Crafty.audio.add("music", "musa.mp3");
+
 
     }
 
