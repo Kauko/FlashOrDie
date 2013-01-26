@@ -36,36 +36,21 @@ soundManager.onready(function() {
       url: 'death.ogg',
       autoLoad: true,
       autoPlay: false,
-      volume: 100
+      volume: 70
     });
  
-    BEAT1_SND = soundManager.createSound({
-      id: 'beat1',
-      url: 'beat1.mp3',
+ 
+    BEAT_SND = soundManager.createSound({
+      id: 'heartbeat',
+      url: 'beat.mp3',
       autoLoad: true,
       autoPlay: false,
       volume: 100
-    });
- 
-    BEAT2_SND = soundManager.createSound({
-      id: 'beat2',
-      url: 'beat2.mp3',
-      autoLoad: true,
-      autoPlay: false,
-      volume: 100
-    });
- 
-    BEAT3_SND = soundManager.createSound({
-      id: 'beat3',
-      url: 'beat3.mp3',
-      autoLoad: true,
-      autoPlay: false,
-      volume: 100
-    });
- 
-    BEAT4_SND = soundManager.createSound({
-      id: 'beat4',
-      url: 'beat4.mp3',
+    }); 
+
+    WIN_SND = soundManager.createSound({
+      id: 'victory',
+      url: 'win.mp3',
       autoLoad: true,
       autoPlay: false,
       volume: 100

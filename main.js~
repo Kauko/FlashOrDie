@@ -75,7 +75,11 @@ window.onload = (function () {
     });
 
     Crafty.scene("loading_game", function(){
-   
+        Crafty.load(["sprites.png", "gfx/player.png"], function() {
+            loadSprites();
+            Crafty.scene("main");
+        });
+
         Crafty.background("#AAF");
         Crafty.e("2D, DOM, Text").attr({w:CANVAS_WIDTH, h:CANVAS_HEIGHT, x:CANVAS_WIDTH / 2, y: CANVAS_HEIGHT / 2})
                 .text("Loading..");
@@ -107,7 +111,6 @@ window.onload = (function () {
         this.loader.bind("EnterFrame", function(){
 			if(SOUNDS_INITIALIZED && GRID == null){
 		       GRID = Crafty.e("Grid");
-		       console.log("GRID LOADEEED");
 			}
 		});
 
@@ -128,22 +131,31 @@ window.onload = (function () {
 
             ENEMY = Crafty.e("Enemy");
 
-
-	        this.bind("Monster_GameOver", function(){
+<<<<<<< HEAD
+	        this.bind("GameOver", function(type){
+	        	
 	        	DEATH_SND.play();
+	        	
+	        	Crafty.audio.play("death",1,0.5);
+	        	if(type == 0)
+	        		Crafty.scene("monster_end");
+	        	else
+	        		Crafty.scene("trap_end");
+			});
+			
+=======
+	        this.bind("Monster_GameOver", function(){
 	        	Crafty.scene("monster_end");
                 Crafty.audio.play("death",1,0.5);
 			});
 
             this.bind("Hole_GameOver", function(){
-            	DEATH_SND.play();
                 Crafty.scene("hole2_end");
                 Crafty.audio.play("death",1,0.5);
             });
 
-
+>>>>>>> 25a520ea4ba76b0bd827b958beb71932cc5c0f01
             this.bind("Victory", function(){
-            	WIN_SND.play();
                 Crafty.scene("good_end");
             });
             
