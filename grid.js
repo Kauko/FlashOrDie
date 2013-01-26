@@ -93,11 +93,13 @@ Crafty.c("Grid", {
     
     //X Y VÄÄRINPÄIN LOL
     isWall: function(x,y){
-    	//TODO vaihda '1' jos / kun useampia seinia
+    	
+    	
     	if(x < 0 || y < 0 || x >= CANVAS_WIDTH || y >= CANVAS_HEIGHT){
     		return true;
     	}
-
+    	
+    	//TODO vaihda '1' jos / kun useampia seinia
     	if(this._mapData[y][x] === '1'){
     		return true;
     	}
