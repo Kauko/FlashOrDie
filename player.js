@@ -21,22 +21,26 @@ Crafty.c("Player", {
     },
 
     init: function() {
-   	  
-   	  this.lastGridPos = {x: -1, y: -1};
-
+   	  this.attr({x: 4 * 16, y: 4 * 16, z:10, w:10, h:10}); 
+  	  this.lastGridPos = {x: 4, y: 4};
       for(var k in this._keys) {
         var keyCode = Crafty.keys[k] || k;
         this._keys[keyCode] = this._keys[k];
       }
       
       this.bind("EnterFrame", function(){
-  		var gridPos = GRID.convertToGridCoords(this.x, this.y);
-  		
-  		if(gridPos.x > this.lastGridPos.x || gridPos.x < this.lastGridPos.x ||
-  		   gridPos.y > this.lastGridPos.y || gridPos.y < this.lastGridPos.y){
-  			
-  			this.lastGridPos = gridPos;
-  			ENEMY.getNewPath(gridPos);
+      	
+      	if(this.hit("enemy")) {
+           		Crafty.trigger("GameOver");
+        }
+      	
+		var gridPos = GRID.convertToGridCoords(this.x, this.y);
+		
+		if(gridPos.x > this.lastGridPos.x || gridPos.x < this.lastGridPos.x ||
+		   gridPos.y > this.lastGridPos.y || gridPos.y < this.lastGridPos.y){
+			
+			this.lastGridPos = gridPos;
+			ENEMY.getNewPath(gridPos);
 			
 			
 		}
