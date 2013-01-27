@@ -16,6 +16,12 @@ var SOUNDS_INITIALIZED = false;
 var GRID_INITIALIZED = false;
 
 var FLASH = null;
+var FLASH_COVER = null;
+var TOP_SHADOW = null;
+var BOTTOM_SHADOW = null;
+var LEFT_SHADOW = null;
+var RIGHT_SHADOW = null;
+
 
 window.onload = (function () {
 
@@ -26,7 +32,7 @@ window.onload = (function () {
 	});
 
     //start crafty
-    Crafty.init(CANVAS_WIDTH, CANVAS_HEIGHT, 60);
+    Crafty.init(CANVAS_WIDTH, CANVAS_HEIGHT, 30);
     Crafty.canvas.init();
     
     /*Crafty.scene("loading_menu", function(){
@@ -108,37 +114,49 @@ window.onload = (function () {
     Crafty.scene("main", function(){
         console.log("Playing");
        //lataa täällä että map ladattu kun mainissa
-        BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("bg.png");
-        console.log("sounds init: " + SOUNDS_INITIALIZED + " grid; " + GRID);
         this.loader = Crafty.e();
         this.loader.bind("EnterFrame", function(){
 			if(SOUNDS_INITIALIZED && GRID_INITIALIZED == false){
 		       GRID = Crafty.e("Grid");
 		       GRID_INITIALIZED = true;
-		       console.log("GRID LOADEEED");
-			}
+			} 
+			
 		});
 
-
-            
         //gridin pitää olla ladattu että gridiä tarvitsevat paskat toimii
         //ei voi laittaa jostain syystä loading scenessä lataamaan gridiä    
         this.bind("MapReady", function(){
             PLAYER = Crafty.e("2D, Canvas, Player, hero").attr({x: 30 * 16, y:6 * 16, z:10});
 
-            FLASH = Crafty.e("2D, Canvas, flash").attr({z:200});
+			//Parempi sprite olisi kova juttu
+            FLASH = Crafty.e("2D, Canvas, flash").attr({z:110}).origin("center");
+            
+            //Hatusta vedetyt arvot "kunhan ei bugaa", vois olla optimoidumpi
+			TOP_SHADOW = Crafty.e("2D, DOM, Color").color("#000")
+							.attr({x: FLASH.x - 1000, y : FLASH.y - 1999, w: 2000, h: 2000, z: 100});
+							
+			LEFT_SHADOW = Crafty.e("2D, DOM, Color").color("#000")
+							.attr({x: FLASH.x - 1999, y: FLASH.y - 1000, w: 2000, h: 2000, z: 100});
+							
+			BOTTOM_SHADOW = Crafty.e("2D, DOM, Color").color("#000")
+							.attr({x: FLASH.x - 1000, y: FLASH.y + 319, w: 2000, h: 2000, z: 100});
+							
+			RIGHT_SHADOW = Crafty.e("2D, DOM, Color").color("#000")
+							.attr({x: FLASH.x + 319, y: FLASH.y - 1000 , w: 2000, h: 2000, z: 100});
+							
+			FLASH_COVER = Crafty.e("2D, Canvas, Color").color("#000")
+							.attr({x: FLASH.x, y: FLASH.y, w: FLASH.w, h: FLASH.w, z: FLASH.z + 1});
 
-            PLAYER.addComponent("Multiway").multiway(2, { W: -90, S: 90, D: 0, A: 180});
-            PLAYER.addComponent("Collision").bind('Moved', function(from){
-                if(this.hit("wall")) {
-                   this.attr({x: from.x, y:from.y});
-                }
-                FLASH.origin("center");
-                FLASH.attr({x: PLAYER.x - FLASH.w / 2, y: PLAYER.y - FLASH.h / 2});
-            });
-
+			FLASH.attach(TOP_SHADOW);
+			FLASH.attach(LEFT_SHADOW);
+			FLASH.attach(BOTTOM_SHADOW);
+			FLASH.attach(RIGHT_SHADOW);
+			FLASH.attach(FLASH_COVER);
+			
+			FLASH_COVER.visible = false;
+			
             ENEMY = Crafty.e("Enemy");
-
+			
 
 	        this.bind("Monster_GameOver", function(){
 	        	DEATH_SND.play();
@@ -159,13 +177,15 @@ window.onload = (function () {
             });
             
             loopMusic();
-            
+            BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 0}).image("bg.png");
+
         	this.loader.destroy();
             
 		});    
 		
 	});
-	//todo retrynappi ja reposition paskat uusiksi
+
+	//Jos gridiä ei nullaa -> restart ei toimi, jos gridin nullaa -> asynkroniset paskat itkee nullipillusta
     Crafty.scene("monster_end", function(){
     	console.log("BAD END");
         BG_IMAGE = Crafty.e("2D, Canvas, Image").attr({x:0, y:0, w: CANVAS_WIDTH, h: CANVAS_HEIGHT, z: 1}).image("endbg_monster.png");
@@ -206,7 +226,7 @@ window.onload = (function () {
             hero: [0,0]
         });
 
-        Crafty.sprite(1200, "gfx/lightmask.png", {
+        Crafty.sprite(320, "gfx/lightmask.png", {
             flash: [0,0]
         });
 

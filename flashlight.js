@@ -9,7 +9,7 @@ Crafty.c("Flashlight", {
 		this.maskCanvas = document.createElement('canvas');
 
     	this.bind("EnterFrame", function(obj){
-          	this.drawBlack();
+          	//this.drawBlack();
     	});
 
     	/*this.bind("Draw", function(obj){

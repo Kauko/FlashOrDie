@@ -76,21 +76,9 @@ Crafty.c("Grid", {
     convertToGridCoords: function(x,y){
         return {x: Math.floor(x/this._nodeSize), y: Math.floor(y/this._nodeSize)};
     },
-    
-     //X Y VÄÄRINPÄIN LOL
+
+	//tyhjä paskareikä    
     _buildMap: function(){
-    	for(var y = 0; y < this._mapData.length; y++){	
-    		for(var x = 0; x < this._mapData[y].length; x++){
-       			if(this._mapData[y][x] === '1'){
-    				Crafty.e("2D, Canvas, wall, Collision").attr({x: x * this._nodeSize, y: y * this._nodeSize, z: 10});
-    			}else if(this._mapData[y][x] === '0'){
-                    Crafty.e("2D, Canvas, hole, Collision").attr({x: x * this._nodeSize, y: y * this._nodeSize, z: 10});
-                }else if(this._mapData[y][x] === 'X'){
-                    Crafty.e("2D, Canvas, goal, Collision").attr({x: x * this._nodeSize, y: y * this._nodeSize, z: 10});
-                }
-    		}
-    	}
-   
    		Crafty.trigger("MapReady");
 
     },
@@ -105,6 +93,38 @@ Crafty.c("Grid", {
     	
     	//TODO vaihda '1' jos / kun useampia seinia
     	if(this._mapData[y][x] === '1'){
+    		return true;
+    	}
+    	
+    	return false;
+    },
+    
+    //X Y VÄÄRINPÄIN LOL
+    isHole: function(x,y){
+    	
+    	
+    	if(x < 0 || y < 0 || x >= CANVAS_WIDTH || y >= CANVAS_HEIGHT){
+    		return true;
+    	}
+    	
+    	//TODO vaihda '1' jos / kun useampia seinia
+    	if(this._mapData[y][x] === '0'){
+    		return true;
+    	}
+    	
+    	return false;
+    },
+    
+    //X Y VÄÄRINPÄIN LOL
+    isGoal: function(x,y){
+    	
+    	
+    	if(x < 0 || y < 0 || x >= CANVAS_WIDTH || y >= CANVAS_HEIGHT){
+    		return true;
+    	}
+    	
+    	//TODO vaihda '1' jos / kun useampia seinia
+    	if(this._mapData[y][x] === 'X'){
     		return true;
     	}
     	

@@ -9,7 +9,7 @@ Crafty.c("Enemy", {
         this.origin("center");
 
         this._path = null;
-        this._tweenTime = 9;
+        this._tweenTime = 20;
         this._gridPos = GRID.convertToGridCoords(this.x, this.y);
         this._tweening = false;
         
@@ -29,7 +29,7 @@ Crafty.c("Enemy", {
 		if(this._nextPos != null){
 			
 			if(this.getDistance(PLAYER.x, PLAYER.y) > 100){
-				this._tweenTime = 5;
+				this._tweenTime = 15;
 			}
 			
 			this._rotateTowards(this._nextPos.point());
@@ -38,7 +38,7 @@ Crafty.c("Enemy", {
     		this._tweening = true;
         	this._gridPos = this._nextPos.point();  	
     		this._nextPos = this._nextPos.next();
-    		this._tweenTime = 7;
+    		this._tweenTime = 20;
 		}
 	
    },
